@@ -7,8 +7,6 @@ import ro.uaic.info.sql.Database;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ArtistController {
     public static void create(String name, String country) throws ControllerException{
@@ -26,7 +24,7 @@ public class ArtistController {
 
             statement.executeUpdate();
 
-            Database.getInstance().disconnect();;
+            Database.getInstance().disconnect();
         }
         catch(DatabaseException | SQLException e){
             e.printStackTrace();

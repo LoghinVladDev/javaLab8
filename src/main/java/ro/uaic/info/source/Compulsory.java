@@ -1,8 +1,6 @@
 package ro.uaic.info.source;
 
-import ro.uaic.info.data.Album;
 import ro.uaic.info.data.AlbumController;
-import ro.uaic.info.data.Artist;
 import ro.uaic.info.data.ArtistController;
 import ro.uaic.info.exception.ControllerException;
 
