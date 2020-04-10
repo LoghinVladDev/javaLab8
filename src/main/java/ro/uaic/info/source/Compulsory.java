@@ -1,8 +1,11 @@
 package ro.uaic.info.source;
 
+import ro.uaic.info.data.Album;
 import ro.uaic.info.data.AlbumController;
 import ro.uaic.info.data.ArtistController;
 import ro.uaic.info.exception.ControllerException;
+
+import java.util.List;
 
 public class Compulsory {
     public static void main(String[] args) {
@@ -71,6 +74,13 @@ public class Compulsory {
                                     .getID()
                     )
             );
+
+            int position;
+
+            List<Album> albumList = AlbumController.findByArtist(
+                    ArtistController.findByName("Queen").getID()
+            );
+
         }
         catch (ControllerException e){
             System.out.println(e.toString());

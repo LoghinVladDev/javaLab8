@@ -32,8 +32,8 @@ public class Database {
 
             this.connection = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3307/music_albums",
-                    "root",
-                    "51571531225565Q"
+                    "dba",
+                    "pass"
             );
         }
         catch (ClassNotFoundException | SQLException e){

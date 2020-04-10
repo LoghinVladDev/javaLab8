@@ -8,7 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ArtistController {
+public class ArtistController{
     public static void create(String name, String country) throws ControllerException{
         try{
             Database.getInstance().connect();
