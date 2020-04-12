@@ -8,6 +8,7 @@ import ro.uaic.info.sql.Database;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -96,8 +97,8 @@ public class ChartController {
 
             resultSet.next();
             Chart chart = new Chart(
-                resultSet.getInt("ID"),
-                resultSet.getString("name")
+                    resultSet.getInt("ID"),
+                    resultSet.getString("name")
             );
 
             chart.setAlbumList(AlbumController.findByChart(chart.getID()));
@@ -105,6 +106,73 @@ public class ChartController {
             Database.getInstance().disconnect();
 
             return chart;
+        }
+        catch (DatabaseException | SQLException e){
+            e.printStackTrace();
+            if (e.getClass().getName().contains("DatabaseException"))
+                throw new ControllerException("Database Connection Failed");
+            else
+                throw new ControllerException("SQLException");
+        }
+    }
+
+    public static int getChartCount() throws ControllerException{
+        try{
+            Database.getInstance().connect();
+
+            String getChartStatement = "select count(*) from charts";
+
+            PreparedStatement statement = Database.getInstance().prepareStatement(getChartStatement);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            resultSet.next();
+
+            int chartCount = resultSet.getInt(1);
+
+            Database.getInstance().disconnect();
+
+            return chartCount;
+        }
+        catch (DatabaseException | SQLException e){
+            e.printStackTrace();
+            if (e.getClass().getName().contains("DatabaseException"))
+                throw new ControllerException("Database Connection Failed");
+            else
+                throw new ControllerException("SQLException");
+        }
+    }
+
+    public static List<Chart> getAllCharts() throws ControllerException{
+        System.out.println("Fetching " + ChartController.getChartCount() + " charts from database\n");
+
+        try{
+            Database.getInstance().connect();
+
+            String getChartStatement = "select * from charts";
+
+            PreparedStatement statement = Database.getInstance().prepareStatement(getChartStatement);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            List<Chart> chartList = new ArrayList<>();
+
+            int chartCount = 1;
+
+            while(resultSet.next()) {
+                System.out.println("\tFetching chart " + (chartCount++) + " from database");
+
+                Chart chart = new Chart(
+                    resultSet.getInt("ID"),
+                    resultSet.getString("name")
+                );
+                chart.setAlbumList(AlbumController.findByChart(chart.getID()));
+                chartList.add(chart);
+            }
+
+            Database.getInstance().disconnect();
+
+            return chartList;
         }
         catch (DatabaseException | SQLException e){
             e.printStackTrace();
