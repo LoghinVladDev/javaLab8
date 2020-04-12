@@ -26,6 +26,11 @@ public class Chart {
         this.albumList = new ArrayList<>();
     }
 
+    public Chart(String name){
+        this.name = name;
+        this.albumList = new ArrayList<>();
+    }
+
     public void addAlbum(Album album, int position){
         this.albumList.add(new Pair<>(album,position));
     }

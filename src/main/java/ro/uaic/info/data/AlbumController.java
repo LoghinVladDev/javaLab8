@@ -149,6 +149,41 @@ public class AlbumController {
         }
     }
 
+    public static Album findByName(String name) throws ControllerException{
+        try{
+            Database.getInstance().connect();
+
+            String findAlbumByNameStatement = "select * from albums" +
+                    " where name = ?";
+
+            PreparedStatement statement = Database.getInstance().prepareStatement(findAlbumByNameStatement);
+
+            statement.setString(1, name);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            resultSet.next();
+
+            Album album = new Album(
+                    resultSet.getInt("ID"),
+                    resultSet.getString("name"),
+                    resultSet.getInt("artist_id"),
+                    resultSet.getInt("release_year")
+            );
+
+            Database.getInstance().disconnect();
+
+            return album;
+        }
+        catch (DatabaseException | SQLException e){
+            e.printStackTrace();
+            if(e.getClass().getName().contains("DatabaseException"))
+                throw new ControllerException("Database Connection Failed");
+            else
+                throw new ControllerException("SQLException");
+        }
+    }
+
 
     public static void clearTable() throws ControllerException {
         try {
